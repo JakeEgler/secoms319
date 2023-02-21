@@ -42,3 +42,9 @@
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
 }
+
+.credits {
+    text-align: center;
+    border-top: 2px grey;
+    border-top-style: dashed;
+}
