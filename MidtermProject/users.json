@@ -1,0 +1,25 @@
+{
+    "user": [
+        {
+            "uid": "01",
+            "username": "TestUser1",
+            "saved": [
+                {
+                    "vid": "01"
+                },
+                {
+                    "vid": "02"
+                }
+            ]
+        },
+        {
+            "uid": "02",
+            "username": "TestUser2",
+            "saved": [
+                {
+                    "vid": "03"
+                }
+            ]
+        }
+    ]
+}
