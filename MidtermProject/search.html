@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,9 +8,10 @@
     <title>Search</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-     <link rel="stylesheet" href="style.css">
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Navbar -->
     <header>
@@ -46,6 +48,13 @@
 
     <!-- Page Contents -->
     <div class="page-body">
+        <form id="search-videos">
+            <label for="search">Search:</label>
+            <input type="text" name="search" id="search">
+            <button name="search_btn">Search</button>
+            <button name="reset" type="reset">Reset</button>
+        </form>
+        <div id="app"></div>
         <!-- Footer Elements -->
         <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
             <symbol id="facebook" viewBox="0 0 16 16">
@@ -92,4 +101,56 @@
         </div>
     </div>  
 </body>
+<script>
+    const jsondata = require("./data.json")
+    var videos = jsondata
+
+    var render = function (data) {
+        var app = document.getElementById('app');
+        var videosHTMLString = '<ul>' +
+            data.map(function (video) {
+                return '<li>' +
+                    '<strong>Title: </strong>' + video.title + '<br/>' +
+                    '<strong>Author: </strong>' + video.creator + '<br/>' +
+                    '<strong>Category: </strong>' + video.category + '<br/>' +
+                    '<strong>Release Date: </strong>' + video.release + '<br/>' +
+                    '</li>';
+            }).join('');
+        + '</ul>';
+
+        app.innerHTML = videosHTMLString;
+    }
+    render(videos);
+
+    var handleSearch = function (event) {
+        event.preventDefault();
+        var searchTerm = event.target.elements['search'].value;
+        var tokens = searchTerm
+            .toLowerCase()
+            .split(' ')
+            .filter(function (token) {
+                return token.trim() !== '';
+            });
+        if (tokens.length) {
+            var searchTermRegex = new RegExp(tokens.join('|'), 'gim');
+            var filteredList = videos.filter(function (video) {
+                var videoString = '';
+                for (var key in video) {
+                    if (video.hasOwnProperty(key) && video[key] !== '') {
+                        videoString += video[key].toString().toLowerCase().trim() + ' ';
+                    }
+                }
+                return videoString.match(searchTermRegex);
+            });
+            render(filteredList);
+        }
+    };
+
+    document.addEventListener('submit', handleSearch);
+    document.addEventListener('reset', function (event) {
+        event.preventDefault();
+        render(videos);
+    })
+</script>
+
 </html>
