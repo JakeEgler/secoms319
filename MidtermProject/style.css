@@ -10,30 +10,14 @@
     background: lightblue;
 }
 
-.video-grid {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto;
-    justify-content: space-evenly;
-    padding-left: 25px;
-    padding-right: 25px;
-    row-gap: 25px;
-}
-
-.video-grid > div {
-    text-align: center;
-    background: lightgray;
-    border: 5px solid black;
-    border-radius: 15px;
-    padding: 20px;
-}
-
 .explore-categories {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding-left: 25px;
     padding-right: 25px;
-    row-gap: 200px;
+    padding-bottom: 25px;
+    row-gap: 100px;
     column-gap: 30px;
 }
 
@@ -45,7 +29,7 @@
 
 }
 
-a.clickable {
+.clickable {
     display: flex;
     height: 100%;
     width: 100%;
