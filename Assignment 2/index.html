@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Store</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Skate Shop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" id="browse-tab">
+                    <a class="nav-link">Browse</a>
+                </li>
+                <li class="nav-item" id="cart-tab">
+                    <a class="nav-link">Cart</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main id="main-content" class="container mx-auto py-6 px-6">
+        <div id="cart-view">
+            <h2>Cart</h2>
+            <ul id="cart-list">
+            </ul>
+            <button id="checkout-btn">Checkout</button>
+        </div>
+        <div id="browse-view" class="view">
+            <h2 class="text-2xl font-bold mb-4">Browse Products</h2>
+            <div class="mb-4">
+                <input id="search-input" type="text" class="form-control" placeholder="Search products...">
+            </div>
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- Product cards will be dynamically populated here -->
+                <div class="product-card">
+                    <img src="./images/product1.jpg" alt="Longboard">
+                    <h3 class="font-bold mb-2">Omen bamboo longboard</h3>
+                    <p class="text-gray-600 mb-2">$199.99</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                    <p class="text-gray-500">The deck is made by Omen, the wheels are Orangatang In Heats, and the
+                        trucks are Gullwings.</p>
+                </div>
+                <div class="product-card">
+                    <img src="./images/product2.jpg" alt="Longboard">
+                    <h3 class="font-bold mb-2">Landyachtz Drop Cat longboard</h3>
+                    <p class="text-gray-600 mb-2">$169.99</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                    <p class="text-gray-500">The deck is a Landyachtz Drop Cat, the wheels are Fatty Hawgs, and the
+                        trucks
+                        are 180mm Paris 3 trucks.</p>
+                </div>
+                <div class="product-card">
+                    <img src="./images/product3.jpg" alt="Skateboard">
+                    <h3 class="font-bold mb-2">Skateboard</h3>
+                    <p class="text-gray-600 mb-2">$89.99</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                    <p class="text-gray-500">This is an 8 inch wide skateboard with Independent trucks.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="index.js"></script>
+</body>
+
+</html>
