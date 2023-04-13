@@ -9,6 +9,12 @@ document.getElementById("browse-tab").addEventListener("click", function () {
   document.getElementById("browse-view").style.display = "block";
 });
 
+document.getElementById("checkout-btn").addEventListener("click", function () {
+  document.getElementById("cart-view").style.display = "none";
+  document.getElementById("browse-view").style.display = "none";
+  document.getElementById("checkout-view").style.display = "block";
+});
+
 // search functionality
 document
   .getElementById("search-input")
@@ -27,7 +33,7 @@ document
     }
   });
 
-// adding products to the cart
+// adding items to the cart
 var cartItems = [];
 
 var totalPrice;
@@ -91,14 +97,17 @@ removeAllButton.addEventListener("click", function () {
   updateCartView();
 });
 
-// cart checkout
-var checkoutButton = document.getElementById("checkout-btn");
-checkoutButton.addEventListener("click", function () {
-  if (cartItems.length > 0) {
-    alert("Thank you for your purchase!");
-    cartItems = [];
-    updateCartView();
-  } else {
-    alert("Your cart is empty. Please add some items before checking out.");
-  }
-});
+document
+  .getElementById("checkout-form-inner")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var address = document.getElementById("address").value;
+    var cardNumber = document.getElementById("card-number").value;
+    var cardHolder = document.getElementById("card-holder").value;
+    var expiryDate = document.getElementById("expiry-date").value;
+    var cvv = document.getElementById("cvv").value;
+
+    document.getElementById("checkout-view").style.display = "none";
+    document.getElementById("thank-view").style.display = "block";
+  });

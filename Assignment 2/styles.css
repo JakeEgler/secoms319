@@ -25,6 +25,15 @@
     display: none;
 }
 
+#checkout-view {
+    display: none;
+}
+
+#thank-view {
+    display: none;
+}
+
+
 #cart-view {
     max-width: 960px;
     /* maximum width for the cart view */
