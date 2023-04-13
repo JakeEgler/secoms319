@@ -35,7 +35,6 @@ document
 
 // adding items to the cart
 var cartItems = [];
-
 var totalPrice;
 
 var addToCartButtons = document.getElementsByClassName("add-to-cart-btn");
@@ -59,6 +58,7 @@ for (var i = 0; i < addToCartButtons.length; i++) {
 function updateCartView() {
   var cartList = document.getElementById("cart-list");
   cartList.innerHTML = "";
+  var finalPrice = 0;
   var totalPrice = 0;
   for (var i = 0; i < cartItems.length; i++) {
     var cartItem = cartItems[i];
@@ -79,16 +79,26 @@ function updateCartView() {
       '<button id="remove-btn">Remove</button>';
     cartList.appendChild(listItem);
     totalPrice += parseFloat(cartItem.price.replace("$", ""));
+    finalPrice = totalPrice * 1.075;
   }
 
   var totalPriceElement = document.createElement("li");
   totalPriceElement.className = "cart-item font-bold";
   totalPriceElement.innerHTML =
-    "<span>Total:</span>" +
+    "<span>Subtotal:</span>" +
     '<span class="ml-auto">$' +
     totalPrice.toFixed(2) +
     "</span>";
   cartList.appendChild(totalPriceElement);
+
+  var finalPriceElement = document.createElement("li");
+  finalPriceElement.className = "cart-item font-bold";
+  finalPriceElement.innerHTML =
+    "<span>Total:</span>" +
+    '<span class="ml-auto">$' +
+    finalPrice.toFixed(2) +
+    "</span>";
+  cartList.appendChild(finalPriceElement);
 }
 
 var removeAllButton = document.getElementById("removeAll-btn");
@@ -97,17 +107,28 @@ removeAllButton.addEventListener("click", function () {
   updateCartView();
 });
 
+//This is the checkout page
 document
   .getElementById("checkout-form-inner")
   .addEventListener("submit", function (event) {
     event.preventDefault();
-
     var address = document.getElementById("address").value;
     var cardNumber = document.getElementById("card-number").value;
     var cardHolder = document.getElementById("card-holder").value;
     var expiryDate = document.getElementById("expiry-date").value;
     var cvv = document.getElementById("cvv").value;
-
     document.getElementById("checkout-view").style.display = "none";
     document.getElementById("thank-view").style.display = "block";
+
+    //This is an attempt at making the confirmation page work.
+    var cartList = document.getElementById("cart-list");
+    cartList.innerHTML = "";
+    var listItem = document.createElement("li");
+    listItem.className = "cart-item";
+    listItem.innerHTML =
+      "<span>" + cardHolder + "</span>" + "<span>" + address + "</span>";
+    cartList.appendChild(listItem);
+
+    cartItems = [];
+    updateCartView();
   });

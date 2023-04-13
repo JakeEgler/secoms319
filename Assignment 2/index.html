@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>My Store</title>
+    <title>Skateboard Shop</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -34,7 +34,6 @@
                 <input id="search-input" type="text" class="form-control" placeholder="Search products...">
             </div>
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                <!-- Product cards will be dynamically populated here -->
                 <div class="product-card">
                     <img src="./images/product1.jpg" alt="Longboard">
                     <h3 class="font-bold mb-2">Omen bamboo longboard</h3>
@@ -69,7 +68,6 @@
             <button id="checkout-btn">Checkout</button>
         </div>
         <div id="checkout-view">
-            <h2>Checkout</h2>
             <form id="checkout-form-inner">
                 <label for="address">Address:</label>
                 <textarea id="address" name="address" rows="4" cols="50"></textarea>
@@ -86,6 +84,8 @@
         </div>
         <div id="thank-view">
             <h2>Thank you for your purchase!</h2>
+            <ul id="cart-list">
+            </ul>
         </div>
     </main>
     <script src="index.js"></script>
