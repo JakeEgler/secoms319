@@ -1,4 +1,4 @@
-// JavaScript code to toggle between Cart and Browse views
+// toggle between Cart and Browse views
 document.getElementById("cart-tab").addEventListener("click", function () {
   document.getElementById("cart-view").style.display = "block";
   document.getElementById("browse-view").style.display = "none";
@@ -9,13 +9,12 @@ document.getElementById("browse-tab").addEventListener("click", function () {
   document.getElementById("browse-view").style.display = "block";
 });
 
-// JavaScript code to handle search functionality
+// search functionality
 document
   .getElementById("search-input")
   .addEventListener("input", function (event) {
     var searchValue = event.target.value.toLowerCase();
     var productCards = document.getElementsByClassName("product-card");
-
     for (var i = 0; i < productCards.length; i++) {
       var productName = productCards[i]
         .getElementsByTagName("h3")[0]
@@ -28,7 +27,7 @@ document
     }
   });
 
-// JavaScript code to handle adding products to the cart
+// adding products to the cart
 var cartItems = [];
 
 var totalPrice;
@@ -39,11 +38,11 @@ for (var i = 0; i < addToCartButtons.length; i++) {
     var productCard = this.parentNode;
     var productName = productCard.getElementsByTagName("h3")[0].innerText;
     var productPrice = productCard.getElementsByTagName("p")[0].innerText;
-    var productImage = productCard.getElementsByTagName("img")[0].src; // Get product image source
+    var productImage = productCard.getElementsByTagName("img")[0].src;
     var cartItem = {
       name: productName,
       price: productPrice,
-      image: productImage, // Store product image source in cart item
+      image: productImage,
     };
     cartItems.push(cartItem);
     updateCartView();
@@ -55,7 +54,6 @@ function updateCartView() {
   var cartList = document.getElementById("cart-list");
   cartList.innerHTML = "";
   var totalPrice = 0;
-
   for (var i = 0; i < cartItems.length; i++) {
     var cartItem = cartItems[i];
     var listItem = document.createElement("li");
@@ -86,7 +84,13 @@ function updateCartView() {
   cartList.appendChild(totalPriceElement);
 }
 
-// JavaScript code to handle cart checkout
+var removeAllButton = document.getElementById("removeAll-btn");
+removeAllButton.addEventListener("click", function () {
+  cartItems = [];
+  updateCartView();
+});
+
+// cart checkout
 var checkoutButton = document.getElementById("checkout-btn");
 checkoutButton.addEventListener("click", function () {
   if (cartItems.length > 0) {
