@@ -69,7 +69,8 @@ function updateCartView() {
       "</span>" +
       '<span class="ml-auto">' +
       cartItem.price +
-      "</span>";
+      "</span>" +
+      '<button id="remove-btn">Remove</button>';
     cartList.appendChild(listItem);
     totalPrice += parseFloat(cartItem.price.replace("$", ""));
   }
