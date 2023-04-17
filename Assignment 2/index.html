@@ -10,6 +10,8 @@
 </head>
 
 <body>
+
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Skate Shop</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -27,26 +29,34 @@
             </ul>
         </div>
     </nav>
+
+    <!-- Page Contents -->
     <main id="main-content" class="container mx-auto py-6 px-6">
+
+        <!-- Browse View -->
         <div id="browse-view" class="view">
             <h2 class="text-2xl font-bold mb-4">Browse Products</h2>
             <div class="mb-4">
                 <input id="search-input" type="text" class="form-control" placeholder="Search products...">
             </div>
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-4 gap-4">
                 <div class="product-card">
                     <img src="./images/product1.jpg" alt="Longboard">
-                    <h3 class="font-bold mb-2">Omen bamboo longboard</h3>
+                    <h3 class="font-bold mb-2">Omen bamboo Longboard</h3>
                     <p class="text-gray-600 mb-2">$199.99</p>
-                    <button class="add-to-cart-btn">Add to Cart</button>
+                    <button class="add-to-cart-btn">+</button>
+                    <var>0</var>
+                    <button class="remove-btn" style="padding-left: 8px; padding-right: 8px;">-</button>
                     <p class="text-gray-500">The deck is made by Omen, the wheels are Orangatang In Heats, and the
                         trucks are Gullwings.</p>
                 </div>
                 <div class="product-card">
                     <img src="./images/product2.jpg" alt="Longboard">
-                    <h3 class="font-bold mb-2">Landyachtz Drop Cat longboard</h3>
+                    <h3 class="font-bold mb-2">Landyachtz Drop Cat Longboard</h3>
                     <p class="text-gray-600 mb-2">$169.99</p>
-                    <button class="add-to-cart-btn">Add to Cart</button>
+                    <button class="add-to-cart-btn">+</button>
+                    <var>0</var>
+                    <button class="remove-btn" style="padding-left: 8px; padding-right: 8px;">-</button>
                     <p class="text-gray-500">The deck is a Landyachtz Drop Cat, the wheels are Fatty Hawgs, and the
                         trucks
                         are 180mm Paris 3 trucks.</p>
@@ -55,33 +65,74 @@
                     <img src="./images/product3.jpg" alt="Skateboard">
                     <h3 class="font-bold mb-2">Skateboard</h3>
                     <p class="text-gray-600 mb-2">$89.99</p>
-                    <button class="add-to-cart-btn">Add to Cart</button>
-                    <p class="text-gray-500">This is an 8 inch wide skateboard with Independent trucks.</p>
+                    <button class="add-to-cart-btn">+</button>
+                    <var>0</var>
+                    <button class="remove-btn" style="padding-left: 8px; padding-right: 8px;">-</button>
+                    <p class="text-gray-500">This is an 8 inch wide skateboard with independent trucks.</p>
+                </div>
+                <div class="product-card">
+                    <img src="./images/product4.jpg" alt="Skateboard">
+                    <h3 class="font-bold mb-2">Santa Cruz Designer Skateboard</h3>
+                    <p class="text-gray-600 mb-2">$89.99</p>
+                    <button class="add-to-cart-btn">+</button>
+                    <var>0</var>
+                    <button class="remove-btn" style="padding-left: 8px; padding-right: 8px;">-</button>
+                    <p class="text-gray-500">This 8 inch wide skateboard comes with a custom design by Santa Cruz on the underside of the deck.</p>
+                </div>
+                <div class="product-card">
+                    <img src="./images/product5.jpg" alt="Longboard">
+                    <h3 class="font-bold mb-2">Dancing Board (Purple)</h3>
+                    <p class="text-gray-600 mb-2">$199.99</p>
+                    <button class="add-to-cart-btn">+</button>
+                    <var>0</var>
+                    <button class="remove-btn" style="padding-left: 8px; padding-right: 8px;">-</button>
+                    <p class="text-gray-500">This board is built to spin, flip, and do any other trick required of it.</p>
+                </div>
+                <div class="product-card">
+                    <img src="./images/product6.jpg" alt="Longboard">
+                    <h3 class="font-bold mb-2">Custom-Built Skateboard</h3>
+                    <p class="text-gray-600 mb-2">$69.99</p>
+                    <button class="add-to-cart-btn">+</button>
+                    <var>0</var>
+                    <button class="remove-btn" style="padding-left: 8px; padding-right: 8px;">-</button>
+                    <p class="text-gray-500">This custom built longboard is tailor-made for riding down slopes and hills.</p>
                 </div>
             </div>
         </div>
+
+        <!-- Cart View -->
         <div id="cart-view">
             <h2>Cart</h2>
             <ul id="cart-list">
             </ul>
             <button id="removeAll-btn">Remove all items</button>
             <button id="checkout-btn">Checkout</button>
+            <button id="browse-btn">Return to browse</button>
         </div>
+
+        <!-- Checkout View -->
         <div id="checkout-view">
             <form id="checkout-form-inner">
+                <li id="cart-list">
+                </li>
                 <label for="address">Address:</label>
                 <textarea id="address" name="address" rows="4" cols="50"></textarea>
                 <label for="card-number">Card Number:</label>
                 <input type="text" id="card-number" name="card-number">
+                <div></div>
                 <label for="card-holder">Card Holder:</label>
                 <input type="text" id="card-holder" name="card-holder">
                 <label for="expiry-date">Expiry Date:</label>
                 <input type="text" id="expiry-date" name="expiry-date">
                 <label for="cvv">CVV:</label>
                 <input type="text" id="cvv" name="cvv">
-                <button class="checkoutSubmit" type="submit">Submit</button>
+                <div></div>
+                <button id="thank-btn" type="submit">Submit</button>
+                <button id="cart-btn">Return to cart</button>
             </form>
         </div>
+
+        <!-- Thank You View -->
         <div id="thank-view">
             <h2>Thank you for your purchase!</h2>
             <ul id="cart-list">
