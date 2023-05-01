@@ -1,17 +1,16 @@
 // Import necessary modules
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const bodyParser = require("body-parser");
 // Connect to MongoDB database
-mongoose.connect("mongodb://localhost/assignment3", {
+mongoose.connect("mongodb://localhost/reactdata", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 // Define the Product schema
 const productSchema = new mongoose.Schema({
-  id: String,
+  _id: Number,
   title: String,
   price: Number,
   description: String,
@@ -24,7 +23,7 @@ const productSchema = new mongoose.Schema({
 });
 
 // Define the Product model
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model("product", productSchema, "fakestore_catalog");
 
 // Create the Express app
 const app = express();
@@ -35,12 +34,10 @@ app.use(bodyParser.json());
 // Serve static files from the 'public' directory
 app.use(express.static("public"));
 
-// Route to add a new product
+// Add a new product
 app.post("/products", async (req, res) => {
   try {
-    // Read data from fakestoreapi.com/products
-    const response = await fetch("https://fakestoreapi.com/products");
-    const data = await response.json();
+    const data = req;
 
     // Create a new Product for each item in the data array
     const products = data.map(
@@ -59,6 +56,8 @@ app.post("/products", async (req, res) => {
         })
     );
 
+    console.log(products);
+
     // Insert the products into the database
     await Product.insertMany(products);
 
@@ -67,10 +66,11 @@ app.post("/products", async (req, res) => {
   } catch (err) {
     // Respond with error message
     res.status(500).json({ message: "Error adding products." });
+    console.log(err);
   }
 });
 
-// Route to get all products
+// Get all products
 app.get("/products", async (req, res) => {
   try {
     // Get all products from the database
@@ -84,21 +84,25 @@ app.get("/products", async (req, res) => {
   }
 });
 
-// Route to get a single product by id
+// Get a single product by id
 app.get("/products/:id", async (req, res) => {
   try {
     // Get the product with the given id from the database
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).exec();
+
+    console.log(req.params.id);
+    console.log(product);
 
     // Respond with product as JSON
     res.json(product);
   } catch (err) {
     // Respond with error message
+    console.log(err);
     res.status(500).json({ message: "Error getting product." });
   }
 });
 
-// Route to update the price of a product by id
+// Update the price of a product by id
 app.put("/products/:id", async (req, res) => {
   try {
     // Get the product with the given id from the database
@@ -106,6 +110,8 @@ app.put("/products/:id", async (req, res) => {
 
     // Update the price of the product
     product.price = req.body.price;
+
+    console.log(req.body.price);
 
     // Save the updated product to the database
     await product.save();
@@ -118,11 +124,14 @@ app.put("/products/:id", async (req, res) => {
   }
 });
 
-// Route to delete a product by id
+// Delete a product by id
 app.delete("/products/:id", async (req, res) => {
   try {
-    // Get the product with the given id from the database
-    const product = await Product.findById(req.params.id);
+    // Delete the product with the given id from the database
+    await Product.deleteOne({ _id: req.params.id });
+
+    // Respond with success message
+    res.json({ message: "Product deleted successfully." });
   } catch (err) {
     // Respond with error message
     res.status(500).json({ message: "Error deleting product." });
