@@ -1,4 +1,3 @@
-// Import necessary modules
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -8,7 +7,7 @@ mongoose.connect("mongodb://localhost/reactdata", {
   useUnifiedTopology: true,
 });
 
-// Define the Product schema
+// Product schema
 const productSchema = new mongoose.Schema({
   _id: Number,
   title: String,
@@ -22,50 +21,40 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-// Define the Product model
+// Product model
 const Product = mongoose.model("product", productSchema, "fakestore_catalog");
 
-// Create the Express app
 const app = express();
-
-// Use bodyParser middleware to parse request body as JSON
 app.use(bodyParser.json());
-
-// Serve static files from the 'public' directory
 app.use(express.static("public"));
 
 // Add a new product
 app.post("/products", async (req, res) => {
   try {
-    const data = req;
+    const data = req.body;
 
-    // Create a new Product for each item in the data array
-    const products = data.map(
-      (item) =>
-        new Product({
-          _id: item.id,
-          title: item.title,
-          price: item.price,
-          description: item.description,
-          category: item.category,
-          image: item.image,
-          rating: {
-            rate: item.rating.rate,
-            count: item.rating.count,
-          },
-        })
-    );
+    // Create a new Product from the request body
+    const product = new Product({
+      _id: data.id,
+      title: data.title,
+      price: data.price,
+      description: data.description,
+      category: data.category,
+      image: data.image,
+      rating: {
+        rate: data.rating.rate,
+        count: data.rating.count,
+      },
+    });
 
-    console.log(products);
-
-    // Insert the products into the database
-    await Product.insertMany(products);
+    // Insert the product into the database
+    await product.save();
 
     // Respond with success message
-    res.status(201).json({ message: "Products added successfully." });
+    res.status(201).json({ message: "Product added successfully." });
   } catch (err) {
     // Respond with error message
-    res.status(500).json({ message: "Error adding products." });
+    res.status(500).json({ message: "Error adding product." });
     console.log(err);
   }
 });
@@ -90,9 +79,6 @@ app.get("/products/:id", async (req, res) => {
     // Get the product with the given id from the database
     const product = await Product.findById(req.params.id).exec();
 
-    console.log(req.params.id);
-    console.log(product);
-
     // Respond with product as JSON
     res.json(product);
   } catch (err) {
@@ -110,8 +96,6 @@ app.put("/products/:id", async (req, res) => {
 
     // Update the price of the product
     product.price = req.body.price;
-
-    console.log(req.body.price);
 
     // Save the updated product to the database
     await product.save();
