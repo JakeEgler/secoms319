@@ -5,31 +5,45 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+//CONFIGURE HERE
+//--------------------------------------------------------------------------------------------------------------------------------------
+//API KEY
 const API_KEY = "f6b4ba75bf114a724b7b1d7d9525cd6f";
 
-//SET YOUR CITY HERE!!!!
-const city = "Ames";
-//SET YOUR STATE HERE!!!! use an ISO 3166-2 codes
-const state = "US-IA";
-//coords
-let lat;
-let lon;
-fetchCoords;
+//SET YOUR ZIP CODE HERE!!!!
+const zip = "50014";
+//SET YOUR COUNTRY HERE!!!! use an ISO 3166-2 codes
+const country = "US";
+
+//SET DATABASE INFO HERE
+const DBhost = "localhost";
+const DBuser = "weatherBot";
+const DBpassword = "some_pass";
+const DBdatabase = "weatherHistory";
+//--------------------------------------------------------------------------------------------------------------------------------------
 
 //Data fetching
 //--------------------------------------------------------------------------------------------------------------------------------------
+//coords
+const coords = fetchCoords();
+console.log(coords[0], coords[1]);
+
 async function fetchCoords() {
-  const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city},${state}&limit=${5}&appid=${API_KEY}`;
+  const geoUrl = `http://api.openweathermap.org/geo/1.0/zip?zip=${zip},${country}&appid=${API_KEY}`;
   const geoResponse = await axios.get(geoUrl);
-  const geoData = await geoResponse.json();
-  lat = geoData[0].lat;
-  lon = geoData[0].lon;
+  const geoData = geoResponse.data;
+  //console.log(geoData);
+  //lat = geoData.lat;
+  //lon = geoData.lon;
+  //console.log(lat, lon);
+  return [geoData.lat, geoData.lon];
 }
 
 async function fetchWeather() {
-  const weatherUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+  const weatherUrl = `http://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
   const weatherResponse = await axios.get(weatherUrl);
-  const weatherData = await weatherResponse.json();
+  const weatherData = weatherResponse.data;
+  //console.log(weatherData);
   return weatherData;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -56,10 +70,10 @@ const mysql = require("mysql");
 const moment = require("moment");
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "weatherBot",
-  password: "some_pass",
-  database: "weatherHistory",
+  host: DBhost,
+  user: DBuser,
+  password: DBpassword,
+  database: DBdatabase,
 });
 
 connection.connect((error) => {
@@ -78,7 +92,7 @@ connection.query(
     latitude DECIMAL(10,6),
     longitude DECIMAL(10,6),
     timezone VARCHAR(255),
-    current_time TIMESTAMP,
+    weather_call_time TIMESTAMP,
     current_temp FLOAT,
     current_feels_like FLOAT,
     current_pressure INT,
@@ -107,7 +121,6 @@ connection.query(
 
 function insertSQL(data) {
   const current = data.current;
-  const current_time = moment.unix(current.dt).format("YYYY-MM-DD HH:mm:ss");
 
   const current_weather = current.weather[0];
 
@@ -116,7 +129,7 @@ function insertSQL(data) {
     latitude,
     longitude,
     timezone,
-    current_time,
+    weather_call_time,
     current_temp,
     current_feels_like,
     current_pressure,
@@ -157,7 +170,7 @@ function insertSQL(data) {
     data.lat,
     data.lon,
     data.timezone,
-    current_time,
+    current.dt,
     current.temp,
     current.feels_like,
     current.pressure,
@@ -184,5 +197,7 @@ function insertSQL(data) {
   });
 }
 
-//setInterval(insertSQL(fetchWeather), 60 * 60 * 1000);
+//console.log(fetchWeather());
+//insertSQL(fetchWeather());
+//setInterval(insertSQL(fetchWeather()), 60 * 60 * 1000);
 //--------------------------------------------------------------------------------------------------------------------------------------
