@@ -25,22 +25,26 @@ const DBdatabase = "weatherHistory";
 //Data fetching
 //--------------------------------------------------------------------------------------------------------------------------------------
 //coords
-const coords = fetchCoords();
-console.log(coords[0], coords[1]);
+//console.log(fetchCoords());
+let coords = { lat: 0, lon: 0 };
+fetchCoords();
 
 async function fetchCoords() {
+  console.log("Getting coordinates now");
   const geoUrl = `http://api.openweathermap.org/geo/1.0/zip?zip=${zip},${country}&appid=${API_KEY}`;
   const geoResponse = await axios.get(geoUrl);
   const geoData = geoResponse.data;
-  //console.log(geoData);
-  //lat = geoData.lat;
-  //lon = geoData.lon;
-  //console.log(lat, lon);
-  return [geoData.lat, geoData.lon];
+  coords.lat = geoData.lat;
+  coords.lon = geoData.lon;
+  console.log("Location");
+  console.log("Zip code: " + zip);
+  console.log("Country: " + country);
+  console.log("Coordinates: " + coords.lat, coords.lon);
 }
 
 async function fetchWeather() {
-  const weatherUrl = `http://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+  console.log("Getting weather now");
+  const weatherUrl = `http://api.openweathermap.org/data/3.0/onecall?lat=${coords.lat}&lon=${coords.lon}&exclude=minutely&appid=${API_KEY}`;
   const weatherResponse = await axios.get(weatherUrl);
   const weatherData = weatherResponse.data;
   //console.log(weatherData);
@@ -51,10 +55,12 @@ async function fetchWeather() {
 //Request section
 //--------------------------------------------------------------------------------------------------------------------------------------
 app.get("/weather", async (req, res) => {
+  let weatherData = await fetchWeather();
   try {
     res.json(weatherData);
   } catch (error) {
     console.error(error);
+    console.log(error);
     res.status(500).json({ error: "Error responding" });
   }
 });
@@ -92,7 +98,7 @@ connection.query(
     latitude DECIMAL(10,6),
     longitude DECIMAL(10,6),
     timezone VARCHAR(255),
-    weather_call_time TIMESTAMP,
+    weather_call_time INT,
     current_temp FLOAT,
     current_feels_like FLOAT,
     current_pressure INT,
@@ -119,7 +125,8 @@ connection.query(
   }
 );
 
-function insertSQL(data) {
+async function insertSQL() {
+  let data = await fetchWeather();
   const current = data.current;
 
   const current_weather = current.weather[0];
@@ -197,7 +204,6 @@ function insertSQL(data) {
   });
 }
 
-//console.log(fetchWeather());
-//insertSQL(fetchWeather());
+setInterval(insertSQL(fetchWeather()), 10);
 //setInterval(insertSQL(fetchWeather()), 60 * 60 * 1000);
 //--------------------------------------------------------------------------------------------------------------------------------------
