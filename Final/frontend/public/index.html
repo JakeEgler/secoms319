@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="../images/sun.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site that gives the weather"
-    />
-    <title>Weather Forecast</title>
-    <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="../src/index.js"></script>
-  </head>
-  <body style="background-color: skyblue;">
-    <!-- Page Contents -->
-    <main id="main-content" class="container mx-auto py-6 px-6">
-      
-      <!-- View Selector Buttons -->
-      <div class="views">
-        <div><a onclick="getWeather()" class="view-button">Current Weather</a></div>
-        <div><a onclick="getHistory()" class="view-button">Weather History</a></div>
-      </div>
-      <pre id="showData"></pre>
-    </main>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="../images/sun.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site that gives the weather" />
+  <title>Weather Forecast</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="text/javascript" src="../src/index.js"></script>
+</head>
+
+<body style="background-color: skyblue;">
+  <!-- Page Contents -->
+  <main id="main-content" class="container mx-auto py-6 px-6">
+
+    <!-- View Selector Buttons -->
+    <div class="views">
+      <div><a onclick="getWeather()" class="view-button">Current Weather</a></div>
+      <div><a onclick="getHistory()" class="view-button">Weather History</a></div>
+    </div>
+    <pre id="showData"></pre>
+  </main>
+</body>
+
 </html>

@@ -8,14 +8,14 @@ async function getWeather() {
   return await axios
     .get(weatherURL)
     .then((data) => console.log(data))
-    .catch((err) => console.log(err)).data;
+    .catch((err) => console.log(err));
 }
 
 async function getHistory() {
   return await axios
     .get(historyURL)
     .then((data) => console.log(data))
-    .catch((err) => console.log(err)).data;
+    .catch((err) => console.log(err));
 }
 
 function WeatherComponent() {
