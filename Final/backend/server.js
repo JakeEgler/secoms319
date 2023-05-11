@@ -1,3 +1,17 @@
+//Dependencies
+//--------------------------------------------------------------------------------------------------------------------------------------
+const axios = require("axios");
+require("dotenv").config();
+
+const express = require("express");
+const app = express();
+const port = 3000;
+
+var CronJob = require("cron").CronJob;
+
+const mysql = require("mysql");
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 //CONFIGURE HERE
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -14,20 +28,6 @@ const DBhost = "localhost";
 const DBuser = "weatherBot";
 const DBpassword = "some_pass";
 const DBdatabase = "weatherHistory";
-//--------------------------------------------------------------------------------------------------------------------------------------
-
-//Dependencies
-//--------------------------------------------------------------------------------------------------------------------------------------
-const axios = require("axios");
-require("dotenv").config();
-
-const express = require("express");
-const app = express();
-const port = 3000;
-
-var CronJob = require("cron").CronJob;
-
-const mysql = require("mysql");
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //Data fetching
@@ -76,8 +76,17 @@ app.get("/weather", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+// This method replies to HTTP get requests with the historical weather data.
+app.get("/history/", async (req, res) => {
+  weatherHistoryData = await getSQLData();
+  try {
+    console.log(weatherHistoryData);
+    res.json(weatherHistoryData);
+  } catch (error) {
+    console.error(error);
+    console.log(error);
+    res.status(500).json({ error: "Error responding" });
+  }
 });
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -218,10 +227,50 @@ async function insertSQL() {
   });
 }
 
+async function getSQLData() {
+  // This is the SQL query to get the last 72 entries from the weather_data table
+  console.log("Retrieving data from the DB");
+  const query = `
+    SELECT *
+    FROM weather_data
+    ORDER BY weather_call_time DESC
+    LIMIT 72;
+  `;
+
+  return new Promise((resolve, reject) => {
+    try {
+      // Execute the query and wait for the results
+      connection.query(query, function (err, result) {
+        if (err) {
+          console.error("Error retrieving SQL data: " + err.stack);
+          reject(err);
+        } else {
+          console.log("Successfully retrieved data");
+          //Makes it an array of objects
+          var normalResults = result.map((mysqlObj, index) => {
+            return Object.assign({}, mysqlObj);
+          });
+          resolve(normalResults);
+        }
+      });
+    } catch (error) {
+      console.error("Error retrieving SQL data: " + error.stack);
+      reject(error);
+    }
+  });
+}
+
 //This runs the insertSQL method every hour
 var SQLjob = new CronJob("0 0 */1 * * *", function () {
   console.log("Running sql job");
   insertSQL();
 });
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+
 SQLjob.start();
 //--------------------------------------------------------------------------------------------------------------------------------------
+
+//console.log(getSQLData());
