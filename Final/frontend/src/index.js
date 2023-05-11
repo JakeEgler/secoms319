@@ -1,18 +1,3 @@
-//import React from "react";
-//import ReactDOM from "react-dom/client";
-//import "./index.css";
-//import App from "./App";
-
-//const root = ReactDOM.createRoot(document.getElementById("root"));
-//root.render(
-//<React.StrictMode>
-//<App />
-//</React.StrictMode>
-//);
-
-
-}
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -31,6 +16,7 @@ async function getHistory() {
     .get(historyURL)
     .then((data) => console.log(data))
     .catch((err) => console.log(err)).data;
+}
 
 function WeatherComponent() {
   const [weatherData, setWeatherData] = useState(null);

@@ -11,47 +11,18 @@
     />
     <title>Weather Forecast</title>
     <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="../src/index.js"></script>
   </head>
-  <body>
+  <body style="background-color: skyblue;">
     <!-- Page Contents -->
     <main id="main-content" class="container mx-auto py-6 px-6">
       
       <!-- View Selector Buttons -->
-      <button onclick="displayCurrent()">Current Weather</button>
-      <button onclick="displayHistory()">Past Weather</button>
+      <div class="views">
+        <div><a onclick="getWeather()" class="view-button">Current Weather</a></div>
+        <div><a onclick="getHistory()" class="view-button">Weather History</a></div>
+      </div>
       <pre id="showData"></pre>
-
-      <!-- Current View -->
-      <div>
-
-      </div>
-
-      <!-- History View -->
-      <div>
-
-      </div>
-      <script>
-
-        function displayCurrent() {
-            fetch('http://localhost:3000/weather')
-              .then(response => response.json())
-              .then(data => {
-                  console.log(data);
-                  var container = document.getElementById("showData");
-                  container.innerHTML = JSON.stringify(data,undefined,2);
-              })
-        };
-
-        function displayHistory() {
-            fetch('http://localhost:3000/history')
-              .then(response => response.json())
-              .then(data => {
-                  console.log(data);
-                  var container = document.getElementById("showData");
-                  container.innerHTML = JSON.stringify(data,undefined,2);
-              })
-        }
-      </script>
     </main>
   </body>
 </html>
