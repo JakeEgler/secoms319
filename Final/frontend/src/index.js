@@ -3,14 +3,6 @@
 //import "./index.css";
 //import App from "./App";
 
-//const React = require("react");
-//const ReactDOM = require("react-dom/client");
-//require("./index.css");
-//const App = require("./App");
-
-// const axios = require("axios");
-// require("dotenv").config();
-
 //const root = ReactDOM.createRoot(document.getElementById("root"));
 //root.render(
 //<React.StrictMode>
