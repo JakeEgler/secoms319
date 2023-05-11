@@ -1,25 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+src="https://unpkg.com/axios/dist/axios.min.js";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const weather='http://localhost:3000/weather';
+const history='http://localhost:3000/history'
 
-export default App;
+axios.get(weather)
+  .then(data=>console.log(data))
+  .catch(err=>console.log(err))

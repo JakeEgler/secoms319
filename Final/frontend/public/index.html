@@ -19,6 +19,7 @@
       <!-- View Selector Buttons -->
       <button onclick="displayCurrent()">Current Weather</button>
       <button onclick="displayHistory()">Past Weather</button>
+      <pre id="showData"></pre>
 
       <!-- Current View -->
       <div>
@@ -29,6 +30,28 @@
       <div>
 
       </div>
+      <script>
+
+        function displayCurrent() {
+            fetch('http://localhost:3000/weather')
+              .then(response => response.json())
+              .then(data => {
+                  console.log(data);
+                  var container = document.getElementById("showData");
+                  container.innerHTML = JSON.stringify(data,undefined,2);
+              })
+        };
+
+        function displayHistory() {
+            fetch('http://localhost:3000/history')
+              .then(response => response.json())
+              .then(data => {
+                  console.log(data);
+                  var container = document.getElementById("showData");
+                  container.innerHTML = JSON.stringify(data,undefined,2);
+              })
+        }
+      </script>
     </main>
   </body>
 </html>
