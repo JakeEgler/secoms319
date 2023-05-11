@@ -1,12 +1,6 @@
-const axios = require("axios");
-require("dotenv").config();
-
-const express = require("express");
-const app = express();
-const port = 3000;
-
 //CONFIGURE HERE
 //--------------------------------------------------------------------------------------------------------------------------------------
+
 //API KEY
 const API_KEY = "f6b4ba75bf114a724b7b1d7d9525cd6f";
 
@@ -22,6 +16,20 @@ const DBpassword = "some_pass";
 const DBdatabase = "weatherHistory";
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+//Dependencies
+//--------------------------------------------------------------------------------------------------------------------------------------
+const axios = require("axios");
+require("dotenv").config();
+
+const express = require("express");
+const app = express();
+const port = 3000;
+
+var CronJob = require("cron").CronJob;
+
+const mysql = require("mysql");
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 //Data fetching
 //--------------------------------------------------------------------------------------------------------------------------------------
 //coords
@@ -29,6 +37,7 @@ const DBdatabase = "weatherHistory";
 let coords = { lat: 0, lon: 0 };
 fetchCoords();
 
+//This method makes the api call to openweathermap.org to get the coordinates
 async function fetchCoords() {
   console.log("Getting coordinates now");
   const geoUrl = `http://api.openweathermap.org/geo/1.0/zip?zip=${zip},${country}&appid=${API_KEY}`;
@@ -42,6 +51,7 @@ async function fetchCoords() {
   console.log("Coordinates: " + coords.lat, coords.lon);
 }
 
+//This method makes the api call to openweathermap.org to get the weather data
 async function fetchWeather() {
   console.log("Getting weather now");
   const weatherUrl = `http://api.openweathermap.org/data/3.0/onecall?lat=${coords.lat}&lon=${coords.lon}&exclude=minutely&appid=${API_KEY}`;
@@ -54,6 +64,7 @@ async function fetchWeather() {
 
 //Request section
 //--------------------------------------------------------------------------------------------------------------------------------------
+// This method replies to HTTP get requests with the weather data and forecast.
 app.get("/weather", async (req, res) => {
   let weatherData = await fetchWeather();
   try {
@@ -72,9 +83,8 @@ app.listen(port, () => {
 
 //SQL section
 //--------------------------------------------------------------------------------------------------------------------------------------
-const mysql = require("mysql");
-const moment = require("moment");
 
+// This is the database connection
 const connection = mysql.createConnection({
   host: DBhost,
   user: DBuser,
@@ -82,6 +92,7 @@ const connection = mysql.createConnection({
   database: DBdatabase,
 });
 
+// This is the database connection error reporting
 connection.connect((error) => {
   if (error) {
     console.error("Error connecting to the database: " + error.stack);
@@ -91,6 +102,7 @@ connection.connect((error) => {
   console.log("Connected to the database.");
 });
 
+//This is the SQL query to make the table if it isn't there
 connection.query(
   `
   CREATE TABLE IF NOT EXISTS weather_data (
@@ -125,12 +137,14 @@ connection.query(
   }
 );
 
+// This function will insert the current weather data into a SQL server.
 async function insertSQL() {
   let data = await fetchWeather();
   const current = data.current;
 
   const current_weather = current.weather[0];
 
+  //This is the SQL query to insert weather data
   const query = `
   INSERT INTO weather_data (
     latitude,
@@ -204,6 +218,10 @@ async function insertSQL() {
   });
 }
 
-setInterval(insertSQL(fetchWeather()), 10);
-//setInterval(insertSQL(fetchWeather()), 60 * 60 * 1000);
+//This runs the insertSQL method every hour
+var SQLjob = new CronJob("0 0 */1 * * *", function () {
+  console.log("Running sql job");
+  insertSQL();
+});
+SQLjob.start();
 //--------------------------------------------------------------------------------------------------------------------------------------
