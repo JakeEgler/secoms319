@@ -1,9 +1,12 @@
-import axios from 'axios';
-src="https://unpkg.com/axios/dist/axios.min.js";
+import React from "react";
+import WeatherComponent from "./WeatherComponent";
 
-const weather='http://localhost:3000/weather';
-const history='http://localhost:3000/history'
+function App() {
+  return (
+    <div>
+      <WeatherComponent />
+    </div>
+  );
+}
 
-axios.get(weather)
-  .then(data=>console.log(data))
-  .catch(err=>console.log(err))
+export default App;
