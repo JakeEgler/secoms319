@@ -36,8 +36,7 @@ function WeatherComponent() {
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(weatherURL)
+    getWeather()
       .then((response) => {
         setWeatherData(response.data);
       })
