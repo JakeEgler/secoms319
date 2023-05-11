@@ -1,0 +1,17 @@
+#view-button
+{
+    background-color: cyan;
+    border: 10px solid black;
+    border-radius: 10px;
+    margin: 40px;
+    padding: 30px;
+}
+
+.clickable {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
