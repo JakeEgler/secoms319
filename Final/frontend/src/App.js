@@ -1,5 +1,5 @@
 import React from "react";
-import WeatherComponent from "./WeatherComponent";
+import WeatherComponent from "./index";
 
 function App() {
   return (
