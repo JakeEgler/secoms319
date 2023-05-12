@@ -32,8 +32,6 @@ const DBdatabase = "weatherHistory";
 
 //Data fetching
 //--------------------------------------------------------------------------------------------------------------------------------------
-//coords
-//console.log(fetchCoords());
 let coords = { lat: 0, lon: 0 };
 fetchCoords();
 
