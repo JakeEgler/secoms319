@@ -5,17 +5,22 @@ const weatherURL = "http://localhost:3000/weather";
 const historyURL = "http://localhost:3000/history";
 
 async function getWeather() {
-  return await axios
-    .get(weatherURL)
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err));
+  //return await axios.get(weatherURL).then((data) => console.log(data)).catch((err) => console.log(err));
+
+  console.log("Getting weather now");
+  const weatherResponse = await axios.get(weatherURL);
+  console.log(weatherResponse);
+  const weatherData = weatherResponse.data;
+  return weatherData;
 }
 
 async function getHistory() {
-  return await axios
-    .get(historyURL)
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err));
+  //return await axios.get(historyURL).then((data) => console.log(data)).catch((err) => console.log(err));
+
+  console.log("Getting weather now");
+  const historyResponse = await axios.get(historyURL);
+  const historyData = historyResponse.data;
+  return historyData;
 }
 
 function WeatherComponent() {
@@ -50,3 +55,5 @@ function WeatherComponent() {
 }
 
 export default WeatherComponent;
+export { getWeather };
+export { getHistory };
